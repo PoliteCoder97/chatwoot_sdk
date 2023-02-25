@@ -177,7 +177,7 @@ class Attachment {
       ..extension = json['extension'] as String?
       ..dataUrl = json['data_url'] as String?
       ..thumbUrl = json['thumb_url'] as String?
-      ..fileSize = idFromJson(json['fileSize']);
+      ..fileSize = json['fileSize'];
   }
 
   Map<String, dynamic> toJson() => _$AttachmentToJson(this);

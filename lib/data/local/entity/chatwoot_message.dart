@@ -153,7 +153,7 @@ class Attachment {
   @JsonKey(name: "thumb_url")
   @HiveField(6)
   String? thumbUrl;
-  @JsonKey(fromJson: idFromJson)
+  @JsonKey()
   @HiveField(7)
   int? fileSize;
 

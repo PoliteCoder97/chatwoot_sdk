@@ -48,9 +48,27 @@ class ChatwootClientServiceImpl extends ChatwootClientService {
   Future<ChatwootMessage> createMessage(
       ChatwootNewMessageRequest request) async {
     try {
+      FormData formData = FormData.fromMap(request.toJson());
+
+      if (request.attachment != null) {
+        String fileName = request.attachment?.path.split('/').last ?? "";
+
+        Map<String, dynamic> json = request.toJson();
+
+        json.addAll({
+          "attachments[]": await MultipartFile.fromFile(
+              request.attachment?.path ?? "",
+              filename: fileName),
+        });
+        formData = FormData.fromMap(json);
+      }
+
       final createResponse = await _dio.post(
           "/public/api/v1/inboxes/${ChatwootClientApiInterceptor.INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor.INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}/conversations/${ChatwootClientApiInterceptor.INTERCEPTOR_CONVERSATION_IDENTIFIER_PLACEHOLDER}/messages",
-          data: request.toJson());
+          data: formData
+          // request.toJson()
+          );
+
       if ((createResponse.statusCode ?? 0).isBetween(199, 300)) {
         return ChatwootMessage.fromJson(createResponse.data);
       } else {

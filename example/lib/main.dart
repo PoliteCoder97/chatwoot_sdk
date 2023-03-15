@@ -55,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
       baseUrl: "https://7c51.stage.alshafagh.ir",
       inboxIdentifier: "RwWRyj6oEtdAv4rKE1osdbz1",
       user: ChatwootUser(
+        identifierHash: "Mohammad@gmail.com",
         identifier: "Mohammad@gmail.com",
         name: "Akbari",
         email: "Mohammad@gmail.com",

@@ -87,7 +87,7 @@ class ChatwootMessage extends Equatable {
       sender: json['sender'] == null
           ? null
           : ChatwootEventMessageUser.fromJson(
-          json['sender'] as Map<String, dynamic>),
+              json['sender'] as Map<String, dynamic>),
     );
   }
 
@@ -168,7 +168,6 @@ class Attachment {
       this.fileSize});
 
   factory Attachment.fromJson(Map<String, dynamic> json) {
-    print("attachment json: $json");
     return Attachment()
       ..id = idFromJson(json['id'])
       ..messageId = idFromJson(json['message_id'])

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chatwoot_sdk/chatwoot_sdk.dart';
 import 'package:chatwoot_sdk/data/chatwoot_repository.dart';
 import 'package:chatwoot_sdk/data/local/entity/chatwoot_contact.dart';
@@ -55,8 +57,11 @@ class ChatwootClient {
   /// [ChatwootMessage] will be returned with the [echoId] on [ChatwootCallbacks.onMessageSent]. If
   /// message fails to send [ChatwootCallbacks.onError] will be triggered [echoId] as data.
   Future<void> sendMessage(
-      {required String content, required String echoId}) async {
-    final request = ChatwootNewMessageRequest(content: content, echoId: echoId);
+      {required String content,
+      required String echoId,
+      File? attachment}) async {
+    final request = ChatwootNewMessageRequest(
+        content: content, echoId: echoId, attachment: attachment);
     await _repository.sendMessage(request);
   }
 

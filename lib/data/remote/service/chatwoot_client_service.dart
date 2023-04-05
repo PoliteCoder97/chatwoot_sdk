@@ -58,7 +58,7 @@ class ChatwootClientServiceImpl extends ChatwootClientService {
         json.addAll({
           "attachments[]": await MultipartFile.fromFile(
               request.attachment?.path ?? "",
-              filename: fileName),
+              filename: fileName)
         });
         formData = FormData.fromMap(json);
       }

@@ -11,6 +11,7 @@ import 'package:chatwoot_sdk/data/remote/service/chatwoot_client_api_interceptor
 import 'package:chatwoot_sdk/data/remote/requests/chatwoot_new_message_request.dart';
 import 'package:dio/dio.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:http_parser/http_parser.dart';
 
 /// Service for handling chatwoot api calls
 /// See [ChatwootClientServiceImpl]
@@ -56,19 +57,17 @@ class ChatwootClientServiceImpl extends ChatwootClientService {
         Map<String, dynamic> json = request.toJson();
 
         json.addAll({
-          "file-type[]":"${request.attachment?.path.split(".").last}",
           "attachments[]": await MultipartFile.fromFile(
               request.attachment?.path ?? "",
-              filename: fileName)
+              filename: fileName,
+              contentType: MediaType.parse(fileName.split(".").last))
         });
         formData = FormData.fromMap(json);
       }
 
       final createResponse = await _dio.post(
           "/public/api/v1/inboxes/${ChatwootClientApiInterceptor.INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor.INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}/conversations/${ChatwootClientApiInterceptor.INTERCEPTOR_CONVERSATION_IDENTIFIER_PLACEHOLDER}/messages",
-          data: formData
-          // request.toJson()
-          );
+          data: formData);
 
       if ((createResponse.statusCode ?? 0).isBetween(199, 300)) {
         return ChatwootMessage.fromJson(createResponse.data);

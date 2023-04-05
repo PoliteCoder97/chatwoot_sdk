@@ -24,6 +24,7 @@ dependencies:
   flutter_chat_types: ^2.4.0
   stream_channel: ^2.1.0
   async: ^2.5.0
+  mime: ^1.0.4
 
 dev_dependencies:
   flutter_test:

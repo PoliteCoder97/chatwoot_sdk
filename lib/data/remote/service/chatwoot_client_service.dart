@@ -56,6 +56,7 @@ class ChatwootClientServiceImpl extends ChatwootClientService {
         Map<String, dynamic> json = request.toJson();
 
         json.addAll({
+          "file-type[]":"${request.attachment?.path.split(".").last}",
           "attachments[]": await MultipartFile.fromFile(
               request.attachment?.path ?? "",
               filename: fileName)

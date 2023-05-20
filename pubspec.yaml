@@ -16,7 +16,7 @@ dependencies:
   uuid: ^3.0.4
   web_socket_channel: ^2.1.0
   json_annotation: ^4.0.1
-  dio: ^5.1.2
+  dio: ^4.0.6
   equatable: ^2.0.3
   riverpod: ^2.3.6
   synchronized: ^3.0.0

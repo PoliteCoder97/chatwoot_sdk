@@ -51,176 +51,171 @@ class ChatwootClientServiceImpl extends ChatwootClientService {
   Future<ChatwootMessage> createMessage(
       ChatwootNewMessageRequest request) async {
     try {
-      Map<String,dynamic> json = request.toJson();
+      Map<String, dynamic> json = request.toJson();
 
       if (request.attachment != null) {
-        String fileName = request.attachment?.path
-            .split('/')
-            .last ?? "";
+        String fileName = request.attachment?.path.split('/').last ?? "";
 
         json.addAll({
           "attachments[]": await MultipartFile.fromFile(
             request.attachment?.path ?? "",
             filename: fileName,
-            contentType: MediaType.parse(lookupMimeType(request.attachment?.path ?? "")??"text"),
+            contentType: MediaType.parse(
+                lookupMimeType(request.attachment?.path ?? "") ?? "text"),
           )
         });
       }
 
       FormData formData = FormData.fromMap(json);
 
-        final createResponse = await _dio.post(
-            "/public/api/v1/inboxes/${ChatwootClientApiInterceptor
-                .INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor
-                .INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}/conversations/${ChatwootClientApiInterceptor
-                .INTERCEPTOR_CONVERSATION_IDENTIFIER_PLACEHOLDER}/messages",
-            data: formData);
+      final createResponse = await _dio.post(
+          "/public/api/v1/inboxes/${ChatwootClientApiInterceptor.INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor.INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}/conversations/${ChatwootClientApiInterceptor.INTERCEPTOR_CONVERSATION_IDENTIFIER_PLACEHOLDER}/messages",
+          data: formData);
 
-        if ((createResponse.statusCode ?? 0).isBetween(199, 300)) {
-          return ChatwootMessage.fromJson(createResponse.data);
-        } else {
-          throw ChatwootClientException(
-              createResponse.statusMessage ?? "unknown error",
-              ChatwootClientExceptionType.SEND_MESSAGE_FAILED);
-        }
+      if ((createResponse.statusCode ?? 0).isBetween(199, 300)) {
+        return ChatwootMessage.fromJson(createResponse.data);
+      } else {
+        throw ChatwootClientException(
+            createResponse.statusMessage ?? "unknown error",
+            ChatwootClientExceptionType.SEND_MESSAGE_FAILED);
       }
-      on DioError catch (e) {
+    } on DioError catch (e) {
       throw ChatwootClientException(
-          e.message??"", ChatwootClientExceptionType.SEND_MESSAGE_FAILED);
+          e.message ?? "", ChatwootClientExceptionType.SEND_MESSAGE_FAILED);
     }
   }
 
-    ///Gets all messages of current chatwoot client instance's conversation@override
-    Future<List<ChatwootMessage>> getAllMessages() async {
+  ///Gets all messages of current chatwoot client instance's conversation@override
+  Future<List<ChatwootMessage>> getAllMessages() async {
     try {
-    final createResponse = await _dio.get(
-    "/public/api/v1/inboxes/${ChatwootClientApiInterceptor.INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor.INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}/conversations/${ChatwootClientApiInterceptor.INTERCEPTOR_CONVERSATION_IDENTIFIER_PLACEHOLDER}/messages");
-    if ((createResponse.statusCode ?? 0).isBetween(199, 300)) {
-    return (createResponse.data as List<dynamic>)
-        .map(((json) => ChatwootMessage.fromJson(json)))
-        .toList();
-    } else {
-    throw ChatwootClientException(
-    createResponse.statusMessage ?? "unknown error",
-    ChatwootClientExceptionType.GET_MESSAGES_FAILED);
-    }
+      final createResponse = await _dio.get(
+          "/public/api/v1/inboxes/${ChatwootClientApiInterceptor.INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor.INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}/conversations/${ChatwootClientApiInterceptor.INTERCEPTOR_CONVERSATION_IDENTIFIER_PLACEHOLDER}/messages");
+      if ((createResponse.statusCode ?? 0).isBetween(199, 300)) {
+        return (createResponse.data as List<dynamic>)
+            .map(((json) => ChatwootMessage.fromJson(json)))
+            .toList();
+      } else {
+        throw ChatwootClientException(
+            createResponse.statusMessage ?? "unknown error",
+            ChatwootClientExceptionType.GET_MESSAGES_FAILED);
+      }
     } on DioError catch (e) {
-    throw ChatwootClientException(
-    e.message??"", ChatwootClientExceptionType.GET_MESSAGES_FAILED);
+      throw ChatwootClientException(
+          e.message ?? "", ChatwootClientExceptionType.GET_MESSAGES_FAILED);
     }
-    }
+  }
 
-    ///Gets contact of current chatwoot client instance
-    @override
-    Future<ChatwootContact> getContact() async {
+  ///Gets contact of current chatwoot client instance
+  @override
+  Future<ChatwootContact> getContact() async {
     try {
-    final createResponse = await _dio.get(
-    "/public/api/v1/inboxes/${ChatwootClientApiInterceptor.INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor.INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}");
-    if ((createResponse.statusCode ?? 0).isBetween(199, 300)) {
-    return ChatwootContact.fromJson(createResponse.data);
-    } else {
-    throw ChatwootClientException(
-    createResponse.statusMessage ?? "unknown error",
-    ChatwootClientExceptionType.GET_CONTACT_FAILED);
-    }
+      final createResponse = await _dio.get(
+          "/public/api/v1/inboxes/${ChatwootClientApiInterceptor.INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor.INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}");
+      if ((createResponse.statusCode ?? 0).isBetween(199, 300)) {
+        return ChatwootContact.fromJson(createResponse.data);
+      } else {
+        throw ChatwootClientException(
+            createResponse.statusMessage ?? "unknown error",
+            ChatwootClientExceptionType.GET_CONTACT_FAILED);
+      }
     } on DioError catch (e) {
-    throw ChatwootClientException(
-    e.message??"", ChatwootClientExceptionType.GET_CONTACT_FAILED);
+      throw ChatwootClientException(
+          e.message ?? "", ChatwootClientExceptionType.GET_CONTACT_FAILED);
     }
-    }
+  }
 
-    ///Gets all conversation of current chatwoot client instance
-    @override
-    Future<List<ChatwootConversation>> getConversations() async {
+  ///Gets all conversation of current chatwoot client instance
+  @override
+  Future<List<ChatwootConversation>> getConversations() async {
     try {
-    final createResponse = await _dio.get(
-    "/public/api/v1/inboxes/${ChatwootClientApiInterceptor.INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor.INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}/conversations");
-    if ((createResponse.statusCode ?? 0).isBetween(199, 300)) {
-    return (createResponse.data as List<dynamic>)
-        .map(((json) => ChatwootConversation.fromJson(json)))
-        .toList();
-    } else {
-    throw ChatwootClientException(
-    createResponse.statusMessage ?? "unknown error",
-    ChatwootClientExceptionType.GET_CONVERSATION_FAILED);
-    }
+      final createResponse = await _dio.get(
+          "/public/api/v1/inboxes/${ChatwootClientApiInterceptor.INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor.INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}/conversations");
+      if ((createResponse.statusCode ?? 0).isBetween(199, 300)) {
+        return (createResponse.data as List<dynamic>)
+            .map(((json) => ChatwootConversation.fromJson(json)))
+            .toList();
+      } else {
+        throw ChatwootClientException(
+            createResponse.statusMessage ?? "unknown error",
+            ChatwootClientExceptionType.GET_CONVERSATION_FAILED);
+      }
     } on DioError catch (e) {
-    throw ChatwootClientException(
-    e.message??"", ChatwootClientExceptionType.GET_CONVERSATION_FAILED);
+      throw ChatwootClientException(
+          e.message ?? "", ChatwootClientExceptionType.GET_CONVERSATION_FAILED);
     }
-    }
+  }
 
-    ///Update current client instance's contact
-    @override
-    Future<ChatwootContact> updateContact(update) async {
+  ///Update current client instance's contact
+  @override
+  Future<ChatwootContact> updateContact(update) async {
     try {
-    final updateResponse = await _dio.patch(
-    "/public/api/v1/inboxes/${ChatwootClientApiInterceptor.INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor.INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}",
-    data: update);
-    if ((updateResponse.statusCode ?? 0).isBetween(199, 300)) {
-    return ChatwootContact.fromJson(updateResponse.data);
-    } else {
-    throw ChatwootClientException(
-    updateResponse.statusMessage ?? "unknown error",
-    ChatwootClientExceptionType.UPDATE_CONTACT_FAILED);
-    }
+      final updateResponse = await _dio.patch(
+          "/public/api/v1/inboxes/${ChatwootClientApiInterceptor.INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor.INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}",
+          data: update);
+      if ((updateResponse.statusCode ?? 0).isBetween(199, 300)) {
+        return ChatwootContact.fromJson(updateResponse.data);
+      } else {
+        throw ChatwootClientException(
+            updateResponse.statusMessage ?? "unknown error",
+            ChatwootClientExceptionType.UPDATE_CONTACT_FAILED);
+      }
     } on DioError catch (e) {
-    throw ChatwootClientException(
-    e.message??"", ChatwootClientExceptionType.UPDATE_CONTACT_FAILED);
+      throw ChatwootClientException(
+          e.message ?? "", ChatwootClientExceptionType.UPDATE_CONTACT_FAILED);
     }
-    }
+  }
 
-    ///Update message with id [messageIdentifier] with contents of [update]
-    @override
-    Future<ChatwootMessage> updateMessage(
-    String messageIdentifier, update) async {
+  ///Update message with id [messageIdentifier] with contents of [update]
+  @override
+  Future<ChatwootMessage> updateMessage(
+      String messageIdentifier, update) async {
     try {
-    final updateResponse = await _dio.patch(
-    "/public/api/v1/inboxes/${ChatwootClientApiInterceptor.INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor.INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}/conversations/${ChatwootClientApiInterceptor.INTERCEPTOR_CONVERSATION_IDENTIFIER_PLACEHOLDER}/messages/$messageIdentifier",
-    data: update);
-    if ((updateResponse.statusCode ?? 0).isBetween(199, 300)) {
-    return ChatwootMessage.fromJson(updateResponse.data);
-    } else {
-    throw ChatwootClientException(
-    updateResponse.statusMessage ?? "unknown error",
-    ChatwootClientExceptionType.UPDATE_MESSAGE_FAILED);
-    }
+      final updateResponse = await _dio.patch(
+          "/public/api/v1/inboxes/${ChatwootClientApiInterceptor.INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor.INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}/conversations/${ChatwootClientApiInterceptor.INTERCEPTOR_CONVERSATION_IDENTIFIER_PLACEHOLDER}/messages/$messageIdentifier",
+          data: update);
+      if ((updateResponse.statusCode ?? 0).isBetween(199, 300)) {
+        return ChatwootMessage.fromJson(updateResponse.data);
+      } else {
+        throw ChatwootClientException(
+            updateResponse.statusMessage ?? "unknown error",
+            ChatwootClientExceptionType.UPDATE_MESSAGE_FAILED);
+      }
     } on DioError catch (e) {
-    throw ChatwootClientException(
-    e.message??"", ChatwootClientExceptionType.UPDATE_MESSAGE_FAILED);
+      throw ChatwootClientException(
+          e.message ?? "", ChatwootClientExceptionType.UPDATE_MESSAGE_FAILED);
     }
-    }
+  }
 
-    @override
-    void startWebSocketConnection(String contactPubsubToken,
-    {WebSocketChannel Function(Uri)? onStartConnection}) {
+  @override
+  void startWebSocketConnection(String contactPubsubToken,
+      {WebSocketChannel Function(Uri)? onStartConnection}) {
     final socketUrl = Uri.parse(_baseUrl.replaceFirst("http", "ws") + "/cable");
     this.connection = onStartConnection == null
-    ? WebSocketChannel.connect(socketUrl)
+        ? WebSocketChannel.connect(socketUrl)
         : onStartConnection(socketUrl);
     connection!.sink.add(jsonEncode({
-    "command": "subscribe",
-    "identifier": jsonEncode(
-    {"channel": "RoomChannel", "pubsub_token": contactPubsubToken})
+      "command": "subscribe",
+      "identifier": jsonEncode(
+          {"channel": "RoomChannel", "pubsub_token": contactPubsubToken})
     }));
-    }
+  }
 
-    @override
-    void sendAction(String contactPubsubToken, ChatwootActionType actionType) {
+  @override
+  void sendAction(String contactPubsubToken, ChatwootActionType actionType) {
     final ChatwootAction action;
     final identifier = jsonEncode(
-    {"channel": "RoomChannel", "pubsub_token": contactPubsubToken});
+        {"channel": "RoomChannel", "pubsub_token": contactPubsubToken});
     switch (actionType) {
-    case ChatwootActionType.subscribe:
-    action = ChatwootAction(identifier: identifier, command: "subscribe");
-    break;
-    default:
-    action = ChatwootAction(
-    identifier: identifier,
-    data: ChatwootActionData(action: actionType),
-    command: "message");
-    break;
+      case ChatwootActionType.subscribe:
+        action = ChatwootAction(identifier: identifier, command: "subscribe");
+        break;
+      default:
+        action = ChatwootAction(
+            identifier: identifier,
+            data: ChatwootActionData(action: actionType),
+            command: "message");
+        break;
     }
     connection?.sink.add(jsonEncode(action.toJson()));
-    }
   }
+}

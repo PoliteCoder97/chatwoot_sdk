@@ -54,13 +54,12 @@ class ChatwootEventMessageUserAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-ChatwootEvent _$ChatwootEventFromJson(Map<String, dynamic> json) {
-  return ChatwootEvent(
-    type: eventTypeFromJson(json['type'] as String?),
-    message: eventMessageFromJson(json['message']),
-    identifier: json['identifier'] as String?,
-  );
-}
+ChatwootEvent _$ChatwootEventFromJson(Map<String, dynamic> json) =>
+    ChatwootEvent(
+      type: eventTypeFromJson(json['type'] as String?),
+      message: eventMessageFromJson(json['message']),
+      identifier: json['identifier'] as String?,
+    );
 
 Map<String, dynamic> _$ChatwootEventToJson(ChatwootEvent instance) =>
     <String, dynamic>{
@@ -69,15 +68,15 @@ Map<String, dynamic> _$ChatwootEventToJson(ChatwootEvent instance) =>
       'message': instance.message?.toJson(),
     };
 
-ChatwootEventMessage _$ChatwootEventMessageFromJson(Map<String, dynamic> json) {
-  return ChatwootEventMessage(
-    data: json['data'] == null
-        ? null
-        : ChatwootEventMessageData.fromJson(
-            json['data'] as Map<String, dynamic>),
-    event: eventMessageTypeFromJson(json['event'] as String?),
-  );
-}
+ChatwootEventMessage _$ChatwootEventMessageFromJson(
+        Map<String, dynamic> json) =>
+    ChatwootEventMessage(
+      data: json['data'] == null
+          ? null
+          : ChatwootEventMessageData.fromJson(
+              json['data'] as Map<String, dynamic>),
+      event: eventMessageTypeFromJson(json['event'] as String?),
+    );
 
 Map<String, dynamic> _$ChatwootEventMessageToJson(
         ChatwootEventMessage instance) =>
@@ -87,39 +86,38 @@ Map<String, dynamic> _$ChatwootEventMessageToJson(
     };
 
 ChatwootEventMessageData _$ChatwootEventMessageDataFromJson(
-    Map<String, dynamic> json) {
-  return ChatwootEventMessageData(
-    id: json['id'] as int?,
-    user: json['user'] == null
-        ? null
-        : ChatwootEventMessageUser.fromJson(
-            json['user'] as Map<String, dynamic>),
-    conversation: json['conversation'],
-    echoId: json['echo_id'] as String?,
-    sender: json['sender'] == null
-        ? null
-        : ChatwootEventMessageUser.fromJson(
-            json['sender'] as Map<String, dynamic>),
-    attachments: (json['attachments'] as List<dynamic>?)
-        ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    conversationId: json['conversation_id'] as int?,
-    createdAt: json['created_at'],
-    contentAttributes: json['content_attributes'],
-    contentType: json['content_type'] as String?,
-    messageType: json['message_type'] as int?,
-    content: json['content'] as String?,
-    inboxId: json['inbox_id'] as int?,
-    sourceId: json['source_id'] as String?,
-    updatedAt: json['updated_at'],
-    status: json['status'] as String?,
-    accountId: json['account_id'] as int?,
-    externalSourceIds: json['external_source_ids'],
-    private: json['private'] as bool?,
-    senderId: json['sender_id'] as int?,
-    users: json['users'],
-  );
-}
+        Map<String, dynamic> json) =>
+    ChatwootEventMessageData(
+      id: json['id'] as int?,
+      user: json['user'] == null
+          ? null
+          : ChatwootEventMessageUser.fromJson(
+              json['user'] as Map<String, dynamic>),
+      conversation: json['conversation'],
+      echoId: json['echo_id'] as String?,
+      sender: json['sender'] == null
+          ? null
+          : ChatwootEventMessageUser.fromJson(
+              json['sender'] as Map<String, dynamic>),
+      attachments: (json['attachments'] as List<dynamic>?)
+          ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      conversationId: json['conversation_id'] as int?,
+      createdAt: json['created_at'],
+      contentAttributes: json['content_attributes'],
+      contentType: json['content_type'] as String?,
+      messageType: json['message_type'] as int?,
+      content: json['content'] as String?,
+      inboxId: json['inbox_id'] as int?,
+      sourceId: json['source_id'] as String?,
+      updatedAt: json['updated_at'],
+      status: json['status'] as String?,
+      accountId: json['account_id'] as int?,
+      externalSourceIds: json['external_source_ids'],
+      private: json['private'] as bool?,
+      senderId: json['sender_id'] as int?,
+      users: json['users'],
+    );
 
 Map<String, dynamic> _$ChatwootEventMessageDataToJson(
         ChatwootEventMessageData instance) =>
@@ -148,14 +146,13 @@ Map<String, dynamic> _$ChatwootEventMessageDataToJson(
     };
 
 ChatwootEventMessageUser _$ChatwootEventMessageUserFromJson(
-    Map<String, dynamic> json) {
-  return ChatwootEventMessageUser(
-    id: json['id'] as int?,
-    avatarUrl: json['avatar_url'] as String?,
-    name: json['name'] as String?,
-    thumbnail: json['thumbnail'] as String?,
-  );
-}
+        Map<String, dynamic> json) =>
+    ChatwootEventMessageUser(
+      id: json['id'] as int?,
+      avatarUrl: json['avatar_url'] as String?,
+      name: json['name'] as String?,
+      thumbnail: json['thumbnail'] as String?,
+    );
 
 Map<String, dynamic> _$ChatwootEventMessageUserToJson(
         ChatwootEventMessageUser instance) =>

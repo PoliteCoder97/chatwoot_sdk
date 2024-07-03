@@ -4,6 +4,20 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+class MyJsonConverter extends JsonConverter<File, String> {
+  const MyJsonConverter();
+
+  @override
+  File fromJson(String json) {
+    throw UnimplementedError();
+  }
+
+  @override
+  String toJson(File object) {
+    throw UnimplementedError();
+  }
+}
+
 @JsonSerializable(explicitToJson: true)
 class ChatwootNewMessageRequest extends Equatable {
   @JsonKey()
@@ -11,6 +25,7 @@ class ChatwootNewMessageRequest extends Equatable {
   @JsonKey(name: "echo_id")
   final String echoId;
   @JsonKey()
+  @MyJsonConverter()
   File? attachment;
 
   ChatwootNewMessageRequest(
@@ -26,7 +41,7 @@ class ChatwootNewMessageRequest extends Equatable {
     );
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'content': content,
       'echo_id': echoId,

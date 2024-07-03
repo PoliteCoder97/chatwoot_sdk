@@ -123,24 +123,23 @@ class AttachmentAdapter extends TypeAdapter<Attachment> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-ChatwootMessage _$ChatwootMessageFromJson(Map<String, dynamic> json) {
-  return ChatwootMessage(
-    id: idFromJson(json['id']),
-    content: json['content'] as String?,
-    messageType: messageTypeFromJson(json['message_type']),
-    contentType: json['content_type'] as String?,
-    contentAttributes: json['content_attributes'],
-    createdAt: createdAtFromJson(json['created_at']),
-    conversationId: idFromJson(json['conversation_id']),
-    attachments: (json['attachments'] as List<dynamic>?)
-        ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    sender: json['sender'] == null
-        ? null
-        : ChatwootEventMessageUser.fromJson(
-            json['sender'] as Map<String, dynamic>),
-  );
-}
+ChatwootMessage _$ChatwootMessageFromJson(Map<String, dynamic> json) =>
+    ChatwootMessage(
+      id: idFromJson(json['id']),
+      content: json['content'] as String?,
+      messageType: messageTypeFromJson(json['message_type']),
+      contentType: json['content_type'] as String?,
+      contentAttributes: json['content_attributes'],
+      createdAt: createdAtFromJson(json['created_at']),
+      conversationId: idFromJson(json['conversation_id']),
+      attachments: (json['attachments'] as List<dynamic>?)
+          ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      sender: json['sender'] == null
+          ? null
+          : ChatwootEventMessageUser.fromJson(
+              json['sender'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$ChatwootMessageToJson(ChatwootMessage instance) =>
     <String, dynamic>{
@@ -155,18 +154,16 @@ Map<String, dynamic> _$ChatwootMessageToJson(ChatwootMessage instance) =>
       'sender': instance.sender?.toJson(),
     };
 
-Attachment _$AttachmentFromJson(Map<String, dynamic> json) {
-  return Attachment(
-    id: idFromJson(json['id']),
-    messageId: idFromJson(json['message_id']),
-    fileType: json['file_type'] as String?,
-    accountId: idFromJson(json['account_id']),
-    extension: json['extension'] as String?,
-    dataUrl: json['data_url'] as String?,
-    thumbUrl: json['thumb_url'] as String?,
-    fileSize: json['fileSize'] as int?,
-  );
-}
+Attachment _$AttachmentFromJson(Map<String, dynamic> json) => Attachment(
+      id: idFromJson(json['id']),
+      messageId: idFromJson(json['message_id']),
+      fileType: json['file_type'] as String?,
+      accountId: idFromJson(json['account_id']),
+      extension: json['extension'] as String?,
+      dataUrl: json['data_url'] as String?,
+      thumbUrl: json['thumb_url'] as String?,
+      fileSize: json['fileSize'] as int?,
+    );
 
 Map<String, dynamic> _$AttachmentToJson(Attachment instance) =>
     <String, dynamic>{

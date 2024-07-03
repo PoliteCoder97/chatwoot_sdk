@@ -53,16 +53,17 @@ class ChatwootConversationAdapter extends TypeAdapter<ChatwootConversation> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-ChatwootConversation _$ChatwootConversationFromJson(Map<String, dynamic> json) {
-  return ChatwootConversation(
-    id: json['id'] as int,
-    inboxId: json['inbox_id'] as int,
-    messages: (json['messages'] as List<dynamic>)
-        .map((e) => ChatwootMessage.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    contact: ChatwootContact.fromJson(json['contact'] as Map<String, dynamic>),
-  );
-}
+ChatwootConversation _$ChatwootConversationFromJson(
+        Map<String, dynamic> json) =>
+    ChatwootConversation(
+      id: json['id'] as int,
+      inboxId: json['inbox_id'] as int,
+      messages: (json['messages'] as List<dynamic>)
+          .map((e) => ChatwootMessage.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      contact:
+          ChatwootContact.fromJson(json['contact'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$ChatwootConversationToJson(
         ChatwootConversation instance) =>

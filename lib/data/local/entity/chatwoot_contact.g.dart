@@ -56,15 +56,14 @@ class ChatwootContactAdapter extends TypeAdapter<ChatwootContact> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-ChatwootContact _$ChatwootContactFromJson(Map<String, dynamic> json) {
-  return ChatwootContact(
-    id: json['id'] as int,
-    contactIdentifier: json['source_id'] as String?,
-    pubsubToken: json['pubsub_token'] as String?,
-    name: json['name'] as String,
-    email: json['email'] as String,
-  );
-}
+ChatwootContact _$ChatwootContactFromJson(Map<String, dynamic> json) =>
+    ChatwootContact(
+      id: json['id'] as int,
+      contactIdentifier: json['source_id'] as String?,
+      pubsubToken: json['pubsub_token'] as String?,
+      name: json['name'] as String,
+      email: json['email'] as String,
+    );
 
 Map<String, dynamic> _$ChatwootContactToJson(ChatwootContact instance) =>
     <String, dynamic>{

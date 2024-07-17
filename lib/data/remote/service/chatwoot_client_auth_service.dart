@@ -8,6 +8,8 @@ import 'package:chatwoot_sdk/data/remote/service/chatwoot_client_api_interceptor
 import 'package:dio/dio.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+import '../../../chatwoot_client.dart';
+
 /// Service for handling chatwoot user authentication api calls
 /// See [ChatwootClientAuthServiceImpl]
 abstract class ChatwootClientAuthService {
@@ -45,6 +47,7 @@ class ChatwootClientAuthServiceImpl extends ChatwootClientAuthService {
             ChatwootClientExceptionType.CREATE_CONTACT_FAILED);
       }
     } on DioError catch (e) {
+      logger.i((e as DioException).response);
       throw ChatwootClientException(
           e.message??"", ChatwootClientExceptionType.CREATE_CONTACT_FAILED);
     }

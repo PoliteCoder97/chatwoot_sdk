@@ -9,6 +9,7 @@ import 'package:chatwoot_sdk/data/remote/requests/chatwoot_new_message_request.d
 import 'package:chatwoot_sdk/di/modules.dart';
 import 'package:chatwoot_sdk/chatwoot_parameters.dart';
 import 'package:chatwoot_sdk/repository_parameters.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'data/local/local_storage.dart';
@@ -18,6 +19,9 @@ import 'data/local/local_storage.dart';
 /// https://www.chatwoot.com/docs/product/channels/api/client-apis
 ///
 /// {@category FlutterClientSdk}
+
+final logger = Logger();
+
 class ChatwootClient {
   late final ChatwootRepository _repository;
   final ChatwootParameters _parameters;
@@ -38,6 +42,9 @@ class ChatwootClient {
   }
 
   void _init() {
+    print("".padLeft(10, '-'));
+    print("ChatwootClient initial");
+    print("".padLeft(10, '-'));
     try {
       _repository.initialize(user);
     } on ChatwootClientException catch (e) {

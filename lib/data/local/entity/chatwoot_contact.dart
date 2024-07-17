@@ -32,7 +32,7 @@ class ChatwootContact extends Equatable {
   ///Email of contact
   @JsonKey()
   @HiveField(4)
-  final String email;
+  final String? email;
 
   ChatwootContact({
     required this.id,

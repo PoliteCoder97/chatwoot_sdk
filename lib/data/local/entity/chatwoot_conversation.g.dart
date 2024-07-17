@@ -56,8 +56,8 @@ class ChatwootConversationAdapter extends TypeAdapter<ChatwootConversation> {
 ChatwootConversation _$ChatwootConversationFromJson(
         Map<String, dynamic> json) =>
     ChatwootConversation(
-      id: json['id'] as int,
-      inboxId: json['inbox_id'] as int,
+      id: (json['id'] as num).toInt(),
+      inboxId: (json['inbox_id'] as num).toInt(),
       messages: (json['messages'] as List<dynamic>)
           .map((e) => ChatwootMessage.fromJson(e as Map<String, dynamic>))
           .toList(),

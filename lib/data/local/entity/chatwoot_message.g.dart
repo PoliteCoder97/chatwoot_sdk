@@ -162,7 +162,7 @@ Attachment _$AttachmentFromJson(Map<String, dynamic> json) => Attachment(
       extension: json['extension'] as String?,
       dataUrl: json['data_url'] as String?,
       thumbUrl: json['thumb_url'] as String?,
-      fileSize: json['fileSize'] as int?,
+      fileSize: (json['fileSize'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$AttachmentToJson(Attachment instance) =>

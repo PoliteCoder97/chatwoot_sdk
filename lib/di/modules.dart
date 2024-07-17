@@ -15,12 +15,22 @@ import 'package:chatwoot_sdk/chatwoot_parameters.dart';
 import 'package:chatwoot_sdk/repository_parameters.dart';
 import 'package:dio/dio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:riverpod/riverpod.dart';
 
 ///Provides an instance of [Dio]
 final unauthenticatedDioProvider =
     Provider.family.autoDispose<Dio, ChatwootParameters>((ref, params) {
-  return Dio(BaseOptions(baseUrl: params.baseUrl));
+      final dio = Dio(BaseOptions(baseUrl: params.baseUrl),);
+  dio.interceptors.add(PrettyDioLogger(
+      requestHeader: true,
+      requestBody: true,
+      responseBody: true,
+      responseHeader: false,
+      error: true,
+      compact: true,
+      maxWidth: 90));
+      return dio;
 });
 
 ///Provides an instance of [ChatwootClientApiInterceptor]

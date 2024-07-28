@@ -15,6 +15,8 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
 
+import '../../../chatwoot_client.dart';
+
 /// Service for handling chatwoot api calls
 /// See [ChatwootClientServiceImpl]
 abstract class ChatwootClientService {
@@ -53,6 +55,7 @@ class ChatwootClientServiceImpl extends ChatwootClientService {
     try {
       Map<String, dynamic> json = request.toJson();
 
+      logger.i(request.attachment);
       if (request.attachment != null) {
         String fileName = request.attachment?.path.split('/').last ?? "";
 
@@ -68,10 +71,19 @@ class ChatwootClientServiceImpl extends ChatwootClientService {
 
       FormData formData = FormData.fromMap(json);
 
+      // https://a22b.stage.alshafagh.ir/api/v1/accounts/1/conversations/11/messages
+      logger.i({
+        "url":
+            "/public/api/v1/inboxes/${ChatwootClientApiInterceptor.INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor.INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}/conversations/${ChatwootClientApiInterceptor.INTERCEPTOR_CONVERSATION_IDENTIFIER_PLACEHOLDER}/messages",
+        "fields": formData.fields,
+        "files": formData.files.map(
+          (e) => "${e.key} length: ${e.value.length}",
+        )
+      });
       final createResponse = await _dio.post(
           "/public/api/v1/inboxes/${ChatwootClientApiInterceptor.INTERCEPTOR_INBOX_IDENTIFIER_PLACEHOLDER}/contacts/${ChatwootClientApiInterceptor.INTERCEPTOR_CONTACT_IDENTIFIER_PLACEHOLDER}/conversations/${ChatwootClientApiInterceptor.INTERCEPTOR_CONVERSATION_IDENTIFIER_PLACEHOLDER}/messages",
           data: formData);
-
+      logger.i(createResponse);
       if ((createResponse.statusCode ?? 0).isBetween(199, 300)) {
         return ChatwootMessage.fromJson(createResponse.data);
       } else {
@@ -80,6 +92,7 @@ class ChatwootClientServiceImpl extends ChatwootClientService {
             ChatwootClientExceptionType.SEND_MESSAGE_FAILED);
       }
     } on DioError catch (e) {
+      logger.e(e);
       throw ChatwootClientException(
           e.message ?? "", ChatwootClientExceptionType.SEND_MESSAGE_FAILED);
     }
@@ -189,7 +202,9 @@ class ChatwootClientServiceImpl extends ChatwootClientService {
   @override
   void startWebSocketConnection(String contactPubsubToken,
       {WebSocketChannel Function(Uri)? onStartConnection}) {
-    final socketUrl = Uri.parse(_baseUrl.replaceFirst("http", "ws") + "/cable");
+    final socketUrl =
+        Uri.parse(_baseUrl.replaceFirst("https", "ws") + "/cable");
+    logger.i("socketUrl: $socketUrl");
     this.connection = onStartConnection == null
         ? WebSocketChannel.connect(socketUrl)
         : onStartConnection(socketUrl);

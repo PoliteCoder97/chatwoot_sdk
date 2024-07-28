@@ -21,7 +21,9 @@ import 'package:riverpod/riverpod.dart';
 ///Provides an instance of [Dio]
 final unauthenticatedDioProvider =
     Provider.family.autoDispose<Dio, ChatwootParameters>((ref, params) {
-      final dio = Dio(BaseOptions(baseUrl: params.baseUrl),);
+  final dio = Dio(
+    BaseOptions(baseUrl: params.baseUrl),
+  );
   dio.interceptors.add(PrettyDioLogger(
       requestHeader: true,
       requestBody: true,
@@ -30,7 +32,7 @@ final unauthenticatedDioProvider =
       error: true,
       compact: true,
       maxWidth: 90));
-      return dio;
+  return dio;
 });
 
 ///Provides an instance of [ChatwootClientApiInterceptor]
@@ -49,6 +51,14 @@ final authenticatedDioProvider =
   final authenticatedDio = Dio(BaseOptions(baseUrl: params.baseUrl));
   final interceptor = ref.read(chatwootClientApiInterceptorProvider(params));
   authenticatedDio.interceptors.add(interceptor);
+  authenticatedDio.interceptors.add(PrettyDioLogger(
+      requestHeader: true,
+      requestBody: true,
+      responseBody: true,
+      responseHeader: false,
+      error: true,
+      compact: true,
+      maxWidth: 90));
   return authenticatedDio;
 });
 

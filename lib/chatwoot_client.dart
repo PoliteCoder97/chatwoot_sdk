@@ -42,9 +42,6 @@ class ChatwootClient {
   }
 
   void _init() {
-    print("".padLeft(10, '-'));
-    print("ChatwootClient initial");
-    print("".padLeft(10, '-'));
     try {
       _repository.initialize(user);
     } on ChatwootClientException catch (e) {

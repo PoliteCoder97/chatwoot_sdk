@@ -105,9 +105,9 @@ class ChatwootRepositoryImpl extends ChatwootRepository {
           );
       localStorage.conversationDao.saveConversation(refreshedConversation);
     } on ChatwootClientException catch (e) {
+      logger.e(e);
       callbacks.onError?.call(e);
     }
-
     listenForEvents();
   }
 
@@ -130,7 +130,7 @@ class ChatwootRepositoryImpl extends ChatwootRepository {
   ///
   /// Received events/messages are pushed through [ChatwootClient.callbacks]
   ///
-   void printWrapped(String text) {
+  void printWrapped(String text) {
     final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
     pattern.allMatches(text).forEach((match) => print(match.group(0)));
   }
@@ -145,6 +145,7 @@ class ChatwootRepositoryImpl extends ChatwootRepository {
         localStorage.contactDao.getContact()!.pubsubToken ?? "");
 
     final newSubscription = clientService.connection!.stream.listen((event) {
+      logger.i(event);
       ChatwootEvent chatwootEvent = ChatwootEvent.fromJson(jsonDecode(event));
       if (chatwootEvent.type == ChatwootEventType.welcome) {
         callbacks.onWelcome?.call();
@@ -158,7 +159,6 @@ class ChatwootRepositoryImpl extends ChatwootRepository {
         callbacks.onConfirmedSubscription?.call();
       } else if (chatwootEvent.message?.event ==
           ChatwootEventMessageType.message_created) {
-        printWrapped("here comes message: $event");
         final message = chatwootEvent.message!.data!.getMessage();
         localStorage.messagesDao.saveMessage(message);
         if (message.isMine) {
@@ -169,8 +169,6 @@ class ChatwootRepositoryImpl extends ChatwootRepository {
         }
       } else if (chatwootEvent.message?.event ==
           ChatwootEventMessageType.message_updated) {
-        print("here comes the updated message: $event");
-
         final message = chatwootEvent.message!.data!.getMessage();
         localStorage.messagesDao.saveMessage(message);
 
@@ -207,7 +205,7 @@ class ChatwootRepositoryImpl extends ChatwootRepository {
         print("chatwoot unknown event: $event");
       }
     });
-    _subscriptions.add(newSubscription);
+    if (newSubscription != null) _subscriptions.add(newSubscription);
   }
 
   /// Clears all data related to current chatwoot client instance

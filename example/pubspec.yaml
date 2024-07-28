@@ -40,7 +40,25 @@ dependencies:
   uuid: ^4.4.2
   device_info_plus: ^10.1.0
   android_id: ^0.4.0
-
+  equatable: ^2.0.5
+  flutter_bloc: ^8.1.1
+  flutter_hooks: ^0.20.1
+  flutter_sound: ^9.6.0
+  flutter_sound_platform_interface: ^9.6.0
+  audioplayers: ^6.0.0
+  flutter_svg: ^2.0.5
+  gesture_x_detector: ^1.1.1
+  file_picker: ^8.0.6
+  path_provider: ^2.0.13
+  path: ^1.8.2
+  awesome_dialog: ^3.2.1
+  flutter_spinkit: ^5.2.1
+  permission_handler: ^11.3.1
+  iconsax_flutter: ^1.0.0
+  image_picker: ^1.1.2
+  cached_network_image: ^3.3.1
+  pretty_dio_logger: ^1.4.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

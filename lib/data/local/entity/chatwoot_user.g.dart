@@ -61,7 +61,7 @@ class ChatwootUserAdapter extends TypeAdapter<ChatwootUser> {
 
 ChatwootUser _$ChatwootUserFromJson(Map<String, dynamic> json) => ChatwootUser(
       identifier: json['identifier'] as String?,
-      identifierHash: json['identifierHash'] as String?,
+      identifierHash: json['identifier_hash'] as String?,
       name: json['name'] as String?,
       email: json['email'] as String?,
       avatarUrl: json['avatar_url'] as String?,
@@ -71,7 +71,7 @@ ChatwootUser _$ChatwootUserFromJson(Map<String, dynamic> json) => ChatwootUser(
 Map<String, dynamic> _$ChatwootUserToJson(ChatwootUser instance) =>
     <String, dynamic>{
       'identifier': instance.identifier,
-      'identifierHash': instance.identifierHash,
+      'identifier_hash': instance.identifierHash,
       'name': instance.name,
       'email': instance.email,
       'avatar_url': instance.avatarUrl,
